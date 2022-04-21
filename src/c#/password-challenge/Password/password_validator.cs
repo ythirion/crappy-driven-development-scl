@@ -27,7 +27,7 @@ public static class password_validator
         {
             Password = match.Groups[default(int) + 1 + 1 + 1 + 1].Value,
             Range = password_validator.match(match),
-            Letter = match.Groups[default(int) + 1 + 1 + 1 - 1 + 1].Value.First()
+            Letter = match.Groups[default(int) + 1 + 1 + 1 - 1 + 1].Value.ToArray()[default(int)]
         };
     }
 
