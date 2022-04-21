@@ -23,17 +23,17 @@ public static class password_validator
     {
         return new pwp()
         {
-            Password = match.Groups[4].Value,
+            Password = match.Groups[default(int) + 1 + 1 + 1 + 1].Value,
             Range = password_validator.match(match),
-            Letter = match.Groups[3].Value.First()
+            Letter = match.Groups[default(int) + 1 + 1 + 1 - 1 + 1].Value.First()
         };
     }
 
     private static IEnumerable<int> match(Match match)
     {
-        if (int.TryParse(match.Groups[1].Value, out int start))
+        if (int.TryParse(match.Groups[default(int) + 1].Value, out int start))
         {
-            if (int.TryParse(match.Groups[2].Value, out int end))
+            if (int.TryParse(match.Groups[default(int) + 1 + 1].Value, out int end))
             {
                 return Enumerable.Range(start, end - start + 1);
             }
@@ -58,7 +58,9 @@ public static class password_validator
 
     public static IEnumerable<string> @join(this string str)
     {
-        return str.Split(Environment.NewLine);
+        string cypher = "qsdoplfjvdslmkvjndfslkmfgn,sdlkvjhdsfmlkg,sdvlkmsdfjdlsvjpdsfljmvnslmkvjsdflkgds,qlvkdfsnvlkqsdjvcjdfksmng,vdsfqoivnerfdvjdfjvkmldfsj okdsfjlnvfdsoi hjdfsgjdfsjkvnsdqpvnsfdpoqearjg";
+        str = str.Replace(Environment.NewLine, cypher);
+        return str.Split(cypher);
     }
 
     public static pwp is_valid(this string input)
