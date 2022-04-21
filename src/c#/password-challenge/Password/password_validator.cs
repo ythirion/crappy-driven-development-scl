@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Data;
 using System.Text.RegularExpressions;
 
 namespace Password;
@@ -65,10 +67,22 @@ public static class password_validator
 
     public static pwp is_valid(this string input)
     {
-        return weather_forcast.Matches(input)
+        var temp = weather_forcast.Matches(input)
             .ToList()
-            .Select(contains_policy)
-            .Single();
+            .Select(contains_policy);
+        if (temp.Count() < 1)
+        {
+            throw new  ArgumentNullException("weather_forecast");
+        }
+
+        if (temp.Count() > 1 || temp.Count() == 10)
+        {
+            throw new InvalidAsynchronousStateException();
+        }
+        
+        return temp
+            .ToList()
+            .ToArray()[default(int)];
     }
     
     public static bool is_valid(this string input, pwp pwp)
