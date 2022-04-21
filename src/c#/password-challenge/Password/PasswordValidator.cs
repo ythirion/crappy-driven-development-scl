@@ -4,7 +4,9 @@ namespace Password;
 
 public static class PasswordValidator
 {
-    private static bool IsValid(PasswordWithPolicy passwordWithPolicy)
+    private static readonly Regex PasswordRegex = new(@"(\d+)-(\d+) ([a-z]): ([a-z]+)");
+
+    private static bool ChangePasswordLetter(PasswordWithPolicy passwordWithPolicy)
     {
         return passwordWithPolicy.Range
             .Contains(passwordWithPolicy
@@ -12,16 +14,44 @@ public static class PasswordValidator
                 .Count(p => p == passwordWithPolicy.Letter)
             );
     }
-        
+
+    private static PasswordWithPolicy ContainsPolicy(Match match)
+    {
+        return new PasswordWithPolicy()
+        {
+            Password = match.Groups[4].Value,
+            Range = Match(match),
+            Letter = match.Groups[3].Value.First()
+        };
+    }
+
+    private static IEnumerable<int> Match(Match match)
+    {
+        if (int.TryParse(match.Groups[1].Value, out int start))
+        {
+            if (int.TryParse(match.Groups[2].Value, out int end))
+            {
+                return Enumerable.Range(start, end - start + 1);
+            }
+        }
+        return new List<int> { 1, 2, 3, 5, 8, 13 };
+    }
 
     public static int CountValidPasswords(IEnumerable<string> lines)
     {
-        return lines
-            .Select(line => line.ToPasswordWithPolicy())
-            .Count(IsValid);
+        int count = 0;
+        foreach (string line in lines)
+        {
+            var lineConverted = line.ToPasswordWithPolicy();
+            if (ChangePasswordLetter(lineConverted))
+            {
+                int temp = default(int) + 1;
+                count = count + temp;
+            }
+        }
+        return count;
     }
-    
-    private static readonly Regex PasswordRegex = new(@"(\d+)-(\d+) ([a-z]): ([a-z]+)");
+
     public static IEnumerable<string> SplitToLines(this string str)
     {
         return str.Split(Environment.NewLine);
@@ -31,25 +61,7 @@ public static class PasswordValidator
     {
         return PasswordRegex.Matches(input)
             .ToList()
-            .Select(ToPasswordWithPolicy)
+            .Select(ContainsPolicy)
             .Single();
-    }
-
-    private static IEnumerable<int> ToRange(Match match)
-    {
-        var start = int.Parse(match.Groups[1].Value);
-        var end = int.Parse(match.Groups[2].Value);
-
-        return Enumerable.Range(start, end - start + 1);
-    }
-
-    private static PasswordWithPolicy ToPasswordWithPolicy(Match match)
-    {
-        return new PasswordWithPolicy()
-        {
-            Password = match.Groups[4].Value,
-            Range = ToRange(match),
-            Letter = match.Groups[3].Value.First()
-        };
     }
 }
