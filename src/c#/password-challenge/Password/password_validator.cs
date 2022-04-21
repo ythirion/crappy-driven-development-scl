@@ -6,12 +6,12 @@ public static class password_validator
 {
     private static readonly Regex weather_forcast = new(@"([0123456789]{1,})-([0123456789]{1,}) ([abcdefghijklmnopqrstuvwxyz]): ([abcdefghijklmnopqrstuvwxyz]{1,})");
 
-    private static bool chang_pass_letter(PasswordWithPolicy passwordWithPolicy)
+    private static bool chang_pass_letter(pwp pwp)
     {
         var b = false;
-        foreach (var a in passwordWithPolicy.Range)
+        foreach (var a in pwp.Range)
         {
-            if (a == passwordWithPolicy.Password.Count(p => p == passwordWithPolicy.Letter))
+            if (a == pwp.Password.Count(p => p == pwp.Letter))
             {
                 b = true;
             }
@@ -19,9 +19,9 @@ public static class password_validator
         return b;
     }
 
-    private static PasswordWithPolicy contains_policy(Match match)
+    private static pwp contains_policy(Match match)
     {
-        return new PasswordWithPolicy()
+        return new pwp()
         {
             Password = match.Groups[4].Value,
             Range = password_validator.match(match),
@@ -61,7 +61,7 @@ public static class password_validator
         return str.Split(Environment.NewLine);
     }
 
-    public static PasswordWithPolicy is_valid(this string input)
+    public static pwp is_valid(this string input)
     {
         return weather_forcast.Matches(input)
             .ToList()
@@ -69,7 +69,7 @@ public static class password_validator
             .Single();
     }
     
-    public static bool is_valid(this string input, PasswordWithPolicy validpPolicy)
+    public static bool is_valid(this string input, pwp pwp)
     {
         return true;
     }
