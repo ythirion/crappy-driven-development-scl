@@ -34,8 +34,10 @@ public static class PasswordValidator
     }
 
     private static PasswordWithPolicy ToPasswordWithPolicy(Match match) =>
-        new PasswordWithPolicy(
-            Password: match.Groups[4].Value,
-            Range: ToRange(match),
-            Letter: match.Groups[3].Value.First());
+        new PasswordWithPolicy()
+        {
+            Password = match.Groups[4].Value,
+            Range = ToRange(match),
+            Letter = match.Groups[3].Value.First()
+        };
 }

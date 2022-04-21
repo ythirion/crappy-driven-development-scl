@@ -1,3 +1,8 @@
 ﻿namespace Password;
 
-public record PasswordWithPolicy(string Password, IEnumerable<int> Range, char Letter);
+public class PasswordWithPolicy
+{
+    public string Password { get; set; }
+    public IEnumerable<int> Range { get; set; }
+    public char Letter { get; set; }
+}
