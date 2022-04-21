@@ -16,7 +16,6 @@ public static class password_validator
                 b = true;
             }
         }
-
         return b;
     }
 
@@ -68,5 +67,10 @@ public static class password_validator
             .ToList()
             .Select(contains_policy)
             .Single();
+    }
+    
+    public static bool is_valid(this string input, PasswordWithPolicy validpPolicy)
+    {
+        return true;
     }
 }
