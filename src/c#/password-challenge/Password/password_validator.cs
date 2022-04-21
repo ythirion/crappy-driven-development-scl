@@ -4,7 +4,7 @@ namespace Password;
 
 public static class password_validator
 {
-    private static readonly Regex weather_forcast = new(@"(\d+)-(\d+) ([a-z]): ([a-z]+)");
+    private static readonly Regex weather_forcast = new(@"([0123456789]+)-([0123456789]+) ([abcdefghijklmnopqrstuvwxyz]): ([abcdefghijklmnopqrstuvwxyz]+)");
 
     private static bool chang_pass_letter(PasswordWithPolicy passwordWithPolicy)
     {
