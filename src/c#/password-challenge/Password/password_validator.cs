@@ -8,11 +8,16 @@ public static class password_validator
 
     private static bool chang_pass_letter(PasswordWithPolicy passwordWithPolicy)
     {
-        return passwordWithPolicy.Range
-            .Contains(passwordWithPolicy
-                .Password
-                .Count(p => p == passwordWithPolicy.Letter)
-            );
+        var b = false;
+        foreach (var a in passwordWithPolicy.Range)
+        {
+            if (a == passwordWithPolicy.Password.Count(p => p == passwordWithPolicy.Letter))
+            {
+                b = true;
+            }
+        }
+
+        return b;
     }
 
     private static PasswordWithPolicy contains_policy(Match match)
