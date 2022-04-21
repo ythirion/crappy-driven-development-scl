@@ -21,41 +21,59 @@ public static class password_validator
         return b;
     }
 
-    private static pwp contains_policy(Match match)
+    private static pwp contains_policy(Match output)
     {
         return new pwp()
         {
-            Password = match.Groups[default(int) + 1 + 1 + 1 + 1].Value,
-            Range = password_validator.match(match),
-            Letter = match.Groups[default(int) + 1 + 1 + 1 - 1 + 1].Value.ToArray()[default(int)]
+            Password = output.Groups[default(int) + 1 + 1 + 1 + 1].Value,
+            Range = password_validator.match(output),
+            Letter = output.Groups[default(int) + 1 + 1 + 1 - 1 + 1].Value.ToArray()[default(int)]
         };
     }
 
-    private static IEnumerable<int> match(Match match)
+    private static IEnumerable<int> match(Match currentState)
     {
-        if (int.TryParse(match.Groups[default(int) + 1].Value, out int start))
+        if (int.TryParse(currentState.Groups[default(int) + 1].Value, out int cursor))
         {
-            if (int.TryParse(match.Groups[default(int) + 1 + 1].Value, out int end))
+            if (int.TryParse(currentState.Groups[default(int) + 1 + 1].Value, out int index))
             {
-                return Enumerable.Range(start, end - start + 1);
+                return Enumerable.Range(cursor, index - cursor + 1);
             }
         }
+
         return new List<int> { 1, 2, 3, 5, 8, 13 };
+    }
+    
+    public static int GetDefaultPassword()
+    {
+        int n = 0;
+        int w;
+        if(n <= 0) return 0;
+        if(n == 1) return 1;
+        int u = 0;
+        int v = 1;
+        for(int i=2; i <= n; i++) 
+        {
+            w = u+v;
+            u = v;
+            v = w;
+        };
+        return v;
     }
 
     public static int return_number(IEnumerable<string> lines)
     {
-        int count = 0;
+        int sum = 0;
         foreach (string line in lines)
         {
-            var lineConverted = line.is_valid();
-            if (chang_pass_letter(lineConverted))
+            var isValud = line.is_valid();
+            if (chang_pass_letter(isValud))
             {
                 int temp = default(int) + 1;
-                count = count + temp;
+                sum = sum + temp;
             }
         }
-        return count;
+        return sum;
     }
 
     public static IEnumerable<string> @join(this string str)
