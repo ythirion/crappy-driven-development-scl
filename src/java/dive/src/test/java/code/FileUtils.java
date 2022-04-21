@@ -1,4 +1,4 @@
-package marine;
+package code;
 
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
