@@ -13,7 +13,7 @@ public class Challenge
     // Exercise from AOC 2020 : https://adventofcode.com/2020/day/2
     [Fact]
     public void CountValidPasswords()
-        => PasswordValidator.CountValidPasswords(_input.SplitToLines())
+        => password_validator.return_number(_input.@join())
             .Should()
             .Be(622);
 }

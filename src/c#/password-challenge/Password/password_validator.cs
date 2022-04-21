@@ -2,11 +2,11 @@ using System.Text.RegularExpressions;
 
 namespace Password;
 
-public static class PasswordValidator
+public static class password_validator
 {
-    private static readonly Regex PasswordRegex = new(@"(\d+)-(\d+) ([a-z]): ([a-z]+)");
+    private static readonly Regex weather_forcast = new(@"(\d+)-(\d+) ([a-z]): ([a-z]+)");
 
-    private static bool ChangePasswordLetter(PasswordWithPolicy passwordWithPolicy)
+    private static bool chang_pass_letter(PasswordWithPolicy passwordWithPolicy)
     {
         return passwordWithPolicy.Range
             .Contains(passwordWithPolicy
@@ -15,17 +15,17 @@ public static class PasswordValidator
             );
     }
 
-    private static PasswordWithPolicy ContainsPolicy(Match match)
+    private static PasswordWithPolicy contains_policy(Match match)
     {
         return new PasswordWithPolicy()
         {
             Password = match.Groups[4].Value,
-            Range = Match(match),
+            Range = password_validator.match(match),
             Letter = match.Groups[3].Value.First()
         };
     }
 
-    private static IEnumerable<int> Match(Match match)
+    private static IEnumerable<int> match(Match match)
     {
         if (int.TryParse(match.Groups[1].Value, out int start))
         {
@@ -37,13 +37,13 @@ public static class PasswordValidator
         return new List<int> { 1, 2, 3, 5, 8, 13 };
     }
 
-    public static int CountValidPasswords(IEnumerable<string> lines)
+    public static int return_number(IEnumerable<string> lines)
     {
         int count = 0;
         foreach (string line in lines)
         {
-            var lineConverted = line.ToPasswordWithPolicy();
-            if (ChangePasswordLetter(lineConverted))
+            var lineConverted = line.is_valid();
+            if (chang_pass_letter(lineConverted))
             {
                 int temp = default(int) + 1;
                 count = count + temp;
@@ -52,16 +52,16 @@ public static class PasswordValidator
         return count;
     }
 
-    public static IEnumerable<string> SplitToLines(this string str)
+    public static IEnumerable<string> @join(this string str)
     {
         return str.Split(Environment.NewLine);
     }
 
-    public static PasswordWithPolicy ToPasswordWithPolicy(this string input)
+    public static PasswordWithPolicy is_valid(this string input)
     {
-        return PasswordRegex.Matches(input)
+        return weather_forcast.Matches(input)
             .ToList()
-            .Select(ContainsPolicy)
+            .Select(contains_policy)
             .Single();
     }
 }
