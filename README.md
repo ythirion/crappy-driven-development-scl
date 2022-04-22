@@ -274,4 +274,5 @@ public class P67580_ALL { private final String d; private final int description;
 
 An attendee feedback : 
 
-`Just wrote an entire algorithm the best way possible for developers nowadays: nobody can maintain it nor even understand it but tests pass so all good!` is it not the whole art behind Software Development 😆
+`Just wrote an entire algorithm the best way possible for developers nowadays: nobody can maintain it nor even understand it but tests pass so all good!`
+Is it not the whole art behind Software Development ? 😆
